@@ -14,9 +14,11 @@ class Marca extends Model
       
     }
 
-    public function caracteristicas(){
+    public function caracteristica(){
         return $this->belongsTo(Caracteristica::class);
      
       
     }
+
+    protected $fillable = ['caracteristica_id'];
 }

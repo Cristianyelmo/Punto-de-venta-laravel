@@ -1,6 +1,6 @@
 @extends('template')
 
-@section('title','Crear categorias')
+@section('title','Editar productos')
 
 
 @push('css')
@@ -22,7 +22,7 @@
 
 
 
-                        <h1 class="mt-4 text-center">Crear Productos</h1>
+                        <h1 class="mt-4 text-center">Editar Productos</h1>
                         <ol class="breadcrumb mb-4">
                        
                             <li class="breadcrumb-item active"><a href="{{route('panel')}}">Inicio</a></li>
@@ -34,7 +34,8 @@
 
 <div class='container w-100 border border-3
 border-primary rounded p-4 mt-3'>
-<form action="{{route('productos.store') }}" method='post' enctype='multipart/form-data'>
+<form action="{{route('productos.update',['producto'=>$producto])}}" method='post' enctype='multipart/form-data'>
+    @method('PATCH')
 @csrf
 
 <div class='row g-3'>
@@ -42,7 +43,7 @@ border-primary rounded p-4 mt-3'>
     <label for="codigo" class='form-label'>Codigo:</label>
     <input type="text" name='codigo' id='codigo'
     class='form-control'
-    values="{{old('codigo')}}">
+    value="{{old('codigo',$producto->codigo)}}">
 @error('codigo')
 <small class='text-danger'>{{'*'.$message}}</small>
 
@@ -55,7 +56,7 @@ border-primary rounded p-4 mt-3'>
     <label for="nombre" class='form-label'>Nombre:</label>
     <input type="text" name='nombre' id='nombre'
     class='form-control'
-    values="{{old('nombre')}}">
+    values="{{old('nombre',$producto->nombre)}}">
 @error('nombre')
 <small class='text-danger'>{{'*'.$message}}</small>
 
@@ -69,7 +70,7 @@ border-primary rounded p-4 mt-3'>
     <label for="stock" class='form-label'>Stock:</label>
     <input type="number" name='stock' id='stock'
     class='form-control'
-    values="{{old('stock')}}">
+    values="{{old('stock',$producto->stock)}}">
 @error('stock')
 <small class='text-danger'>{{'*'.$message}}</small>
 
@@ -127,10 +128,14 @@ border-primary rounded p-4 mt-3'>
 <div class="col-md-6">
     <label for="marca_id" class='form-label'>Marcas:</label>
    <select name="marca_id" id="marca_id" class='form-control'>
-
 @foreach ($marcas as $item)
+@if($producto->marca_id == $item->id)
+<option selected value="{{$item->id}}" {{old('marca_id')== $item->id ? 'selected': '' }}>{{$item->nombre}}</option>
+@else
+<option  value="{{$item->id}}" {{old('marca_id')== $item->id ? 'selected': '' }}>{{$item->nombre}}</option>
+@endif
 
-<option value="{{$item->id}}" {{old('marca_id')== $item->id ? 'selected': '' }}>{{$item->nombre}}</option>
+
 
 @endforeach
 
@@ -148,11 +153,20 @@ border-primary rounded p-4 mt-3'>
     <label for="presentacione_id" class='form-label'>Presentaciones:</label>
    <select name="presentacione_id" id="presentacione_id" class='form-control'>
 
-@foreach ($presentaciones as $item)
 
+
+   @foreach ($presentaciones as $item)
+@if($producto->presentacione_id == $item->id)
+<option selected value="{{$item->id}}"  {{old('presentacione_id')== $item->id ? 'selected': '' }}>{{$item->nombre}}</option>
+@else
 <option value="{{$item->id}}"  {{old('presentacione_id')== $item->id ? 'selected': '' }}>{{$item->nombre}}</option>
+@endif
+
+
 
 @endforeach
+
+
 
    </select>
 @error('presentacione_id')
@@ -166,9 +180,18 @@ border-primary rounded p-4 mt-3'>
     <label for="categorias" class='form-label'>Categorias:</label>
    <select name="categorias[]" id="categorias" class='form-control' multiple>
 
-@foreach ($categorias as $item)
 
-<option value="{{$item->id}}" </option>
+
+   @foreach ($categorias as $item)
+@if(in_array($item->id,$producto->categorias->pluck('id')->toArray()))
+<option selected value="{{$item->id}}" 
+{{(in_array($item->id,old('categorias',[]))) ? 'selected' : ''}}>{{$item->nombre}} </option>
+@else
+<option  value="{{$item->id}}" 
+{{(in_array($item->id,old('categorias',[]))) ? 'selected' : ''}}>{{$item->nombre}} </option>
+@endif
+
+
 
 @endforeach
 

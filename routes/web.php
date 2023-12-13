@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\categoriaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\marcaController;
+use App\Http\Controllers\presentacioneController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,7 +26,9 @@ Route::view('/panel','panel.index')->name('panel');
 
  Route::resources([
     'categorias'=> categoriaController::class,
-    'productos'=>ProductController::class
+    'productos'=>ProductController::class,
+    'marcas'=> marcaController::class,
+    'presentaciones'=> presentacioneController::class,
 ]); 
 
 /* Route::resource('productos',ProductController::class); */

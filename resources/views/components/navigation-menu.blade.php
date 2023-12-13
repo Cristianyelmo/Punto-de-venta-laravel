@@ -64,6 +64,12 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Productos
                             </a>
+
+
+                            <a class="nav-link" href="{{route('marcas.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Marcas
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
